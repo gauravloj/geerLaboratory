@@ -1,0 +1,44 @@
+// To define a variable
+def projectVersion = "2.2"
+
+// to make it available to different projects
+//def project.ext.multiprojectVersion = "2.21"
+
+// to get tasks requred for different plugins, java in this case
+//apply plugin: 'java'
+
+// Different ways to create a task
+project.task("thereyougo")
+task("anotheryougo")
+task "anotheryougotoo"
+task anotheryougothree
+
+task hello {
+	// Task property 
+	description = "Say hello to gradle"
+	
+	// Defines action that will execute first
+	doFirst {println "Welcome to my shop" }
+	
+	// Defines task dependencies on another task
+	dependsOn anotheryougo
+
+	// Defines action that will execute last
+	doLast {
+		println "Hello, gradle $projectVersion"
+	}
+	
+	// mustRunafter taskName - definitly run after task 'taskName'
+	// shouldRunafter taskName - may run after task 'taskName'
+	// finalizeBy taskName - after completion of current task, taskName should be executed (reverse of dependsOn ) 
+	
+
+}
+
+// Another way to define actions to a task
+anotheryougothree.description = "Going for three"
+
+anotheryougotoo.doLast { println "doing for last two" }
+
+// Another way to define doLast actions
+anotheryougo << { println "you go too" }
