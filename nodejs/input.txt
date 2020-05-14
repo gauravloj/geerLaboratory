@@ -1,0 +1,15 @@
+Bella ciao
+
+Third party packages:
+express
+jade
+nano
+body-parser
+error-handlers
+url
+server-favicon
+nodemon : monitor source code
+babel-core
+request
+async
+express-generator

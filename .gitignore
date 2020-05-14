@@ -3,3 +3,4 @@ RemoteSystemsTempFiles
 kotlin/out
 .recommenders
 .DS_Store
+**/node_modules/**
