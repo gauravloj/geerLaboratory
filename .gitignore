@@ -4,3 +4,6 @@ kotlin/out
 .recommenders
 .DS_Store
 **/node_modules/**
+**/mingw-w64-v7.0.0/**
+.vscode/**
+

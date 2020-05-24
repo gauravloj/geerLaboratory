@@ -1,0 +1,109 @@
+Refer 'images/c-program-structure.png'
+
+1. Documentation (optional): Description about the functions written in the c file
+2. pre-process statements : Library file of statements that will be pre-processed
+3. Global decralration (optional): Variables or functions that will be used in the code
+4. Main function : entry point of the code
+5. User defined function (optional) : Any function apart from main function that will be used inside main function or other user-defined function
+
+----------------------------------------------------------------------------------------------------
+
+Building c program: It requires c comiler like gcc
+
+1. `gcc -o <outputfilename> <inputfilename>.c` : compile inputfilename.c and saves the compiled code as outputfilename
+2. Compilation flow : refer 'images/c-compilation-flow.png'
+    - Input files along with included library files are pre-processed. Means all the code is brought in one intermediate file with *.i extension
+    - intermediate file is compiled by compiler for any compilation error. Output of this stage is an assembly level file with *.s extension
+    - *.s file will be processed by assembler to generate machine level code with *.o extension
+    - Linker will process all the generated *.o files to create the final executable file.
+
+----------------------------------------------------------------------------------------------------
+
+'stdio.h' header file is used for standard input and output operations
+
+----------------------------------------------------------------------------------------------------
+
+Preprocessor: Refer 'images/compilation-flow-detail.png'
+1. Preprocessor is a program that processes the code before it is being compiled
+2. '#' is used to indicate that a statement is to be preprocessed.
+3. All the commands that starts with '#' and is used to preprocess tha code are called 'Preprocessor directives'
+4. Some Preprocessor directives: Refer preprocessor-directives.png
+    - #define : indicates a macro
+    - #include : Indicates a file to be included
+    - #ifdef, #ifndef, #undef : conditional Preprocessing command 
+    - #, ## : operators
+    - #pragma, #error, #line : misc
+5. Predefined macros: Refer 'predefined-macros.png'
+    - __DATE__
+    - __TIME__
+    - __FILE__
+    - __LINE__
+    - __STDC__
+6. Preprocessor operators:
+    - Macro continuation '\' : If macro is too long to be in one line, then '\' can be used in the end to make it multiline macro
+    - Stringize '#' : Converts macro parameters to string
+    - Token pasting '##'
+    - The defined() operator : Checks if an identifier is defined using #define command
+----------------------------------------------------------------------------------------------------
+
+typedef:
+1. Keyword used to assign alias to existing types
+2. Syntax : In below example, alias for employee is emp. Hence it's variable can be declared as 'emp varname' instead of 'struct employee varname'
+    typedef struct employee {
+        int id;
+        char name[22];
+    } emp;
+
+----------------------------------------------------------------------------------------------------
+
+Pointers
+1. All the variables are stored in memory locations
+2. value of those variables are the value stored at a particular memory location
+3. Using simple variable returns the value
+4. A pointer to a variable is the address to that memory location
+5. Hence a pointer is another memory location whose values is address of another variable
+6. Syntax : 
+    - declaration : int *ptr;   // '*' indicates that the variable is a pointer which will point to any int type variable
+    - Assignment : ptr = &var;   // Assigns the address of var to ptr. '&' is used to extract address of any variable, also known as 'Address-to' operator
+    - Dereferenc : printf("%d is stored at %p", *ptr, ptr);  // ptr directly used wil give address, and if used with '*' will give value stored in that address
+7. pointer Arithmatic:
+    - ptr + 1 : next memory location
+    - ptr - 1 : previous memory location
+    - ptr * n, ptr/n are invalid operations
+    - next memory location depends on data type
+        - If ptr = 1000, and it is a pointer to int
+        - ptr + 1 instead of returning 1001, it will return 1000 + (size if int) = 1000 + 4 = 1004.
+    - Similarly, previous location is current - (size of data type pointed by the pointer)
+8. Example :
+    - int a[4];
+    - int *b = &a;
+    - a[2] = *(a + 2) => two memory location ahead of a
+    = *(a + 2) is equivalent to b + 2 as b is pointer to a
+
+----------------------------------------------------------------------------------------------------
+
+Dynamic memory allcation
+1. Explicit allocation of memory by a program
+2. Any memory that is Dynamically allocated must be explicitly released in the program
+3. Different functions available in stdlib.h: Refer 'images/memory-allocation.png'
+    - malloc: memory allocation
+        - Syntax : ptr = (cast-type*) malloc(byte-size);
+        - ptr : pointer to the allocated memory
+        - cast-type : type of the memory to be allocated
+        - byte-size : amount of memory to be allocated
+        - Eg. ptr = (int*) malloc(100 * sizeof(int));      // sizeof returns the size of a type
+    - calloc : Contiguous memory allocation
+        - Syntax : ptr = (cast-type*) malloc(n, element-size);
+        - ptr : pointer to the allocated memory
+        - cast-type : type of the memory to be allocated
+        - n : number of memory allocations for given element-size
+        - element-size : Size of single element
+        - calloc initializes the address to 0
+        - Eg. ptr = (int*) malloc(100, sizeof(int));      // sizeof returns the size of a type
+    - free : Release the space allocated using malloc and calloc
+        - Syntax : free(ptr)
+    - realloc : Change memory size of previously allocated memory
+        - Syntax : ptr = realloc(ptr, newsize)
+            - ptr : pointer to the allocated memory
+            - newsize : size of memory to be allocated. no need to specify size of datatype. only number of memory allocation required for that datatype
+            - Eg. ptr = realloc(ptr, 10 )
