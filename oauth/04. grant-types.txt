@@ -1,0 +1,16 @@
+1. Authorization code : 
+    - Client request access to a resource from resource server
+    - Resource server redirects the request to Authorization server
+    - Authorization server sends Auth Code back to Client
+    - Client uses Authorization code to request Access token from resource server
+    - To get to access token, Client ID and Client secret are required along with Auth code
+2. Authorization code flow : For mobile apps
+    - PKCE : proof key for code exchange
+    - Client generate code verifier : a URL safe string stored locally on client system
+    - Client will generate code challenge using the verifier: Base64 encoded SHA256 hash of verifier
+    - Client will send code challenge along with auth request
+    - Auth server sends the auth code if Authorization is successfull
+    - Now when the client request for access token using Auth code, it will send verifier as well
+    - Authorization server will use verifier to generate the code challenge and it will match it with previously received challenge
+    - If the generated code challenge matches the previously received challenge, then access token is granted
+    - Eg. appauth.io libraries from OIDC

@@ -1,0 +1,35 @@
+1. OAuth :
+    - It is an authorization tool not authentication tool
+    - It is a framework that defines how two services can interact
+    - It leaves many things undefined to provide the ability to grow
+2. Authentication : Verifies 'who are you'
+3. Authorization : Decides 'what can you do'
+4. OpenID Connect :
+    - OAuth 2.0 extension with functions and forms to user profile information
+    - Special case of OAuth designed for Single Sign On process and share profile information
+    - It uses JWT tokens
+5. Other extensions of OAuth:
+    - JWT : Json Web Token
+    - Token revocation 
+    - Token introspection
+    - Dynamic client registration
+    - Authorization server metadata discovery
+6. Tokens : 
+    - JWT and Opaque tokens
+    - Validate JWT token :
+        - Access token separated by two dots '.'
+        - Each part is Base64 encoded string
+        - First part is header that contains information about hash algorithm and keys used
+        - Second part is payload : it contains user defined information. Common fields are 
+            - 'iss' : Issuer
+            - 'aud' : Audiance
+            - 'exp' : expiration time
+            - 'cid' : client id
+        - Third part is signature : It is generated using publick key and first two part of JWT 
+        - Any change in header or payload will change the signature thereby invalidating it
+    - Refresh token : Opaque token Used to request access token
+    - ID token : JWT token specific to OIDC
+        - Peofile scope
+        - email scope
+        - address scope
+        - phone scope
