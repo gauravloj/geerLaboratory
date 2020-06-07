@@ -1,0 +1,117 @@
+1. `brew install postgres` : Install postgres
+2. `ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents` : Create symbolic linc in LaunchAgents
+3. `alias pg_start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"` : Start server
+4. `alias pg_stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"` : Stop server
+5. CREATE DATABASE dbname; : 
+    - creates database 'dbname'
+    - In case above command throws error, then write dbname in quotes : CREATE DATABASE "dbname"
+6. \c dbname : connect to database 'dbname'.
+7. \l to list all the databases
+8. DROP DATABASE dbname : Deletes database 'dbname'
+9. Creating table : 
+    CREATE TABLE tablename {
+        column_name datatype constraint,
+        ...
+    }
+    - List of data types : https://www.postgresql.org/docs/9.5/datatype.html
+10. \d : Lists all the tables in a database
+11. \d tablename : describes table structure
+12. Inserting into table
+    - `INSERT INTO tablename (column_names,...) values (values,...)
+13. Generate mock data : mockaroo.com
+14. Select Query :
+    SELECT * FROM tablename : selects all the row from table tablename 
+    WHERE condition : Filters the rows based on 'condition'. Multiple conditions can be clubbed using 'AND' or 'OR' operator
+    ORDER BY column_name : Sort the rows based on column_name
+15. SELECT DISTINCT column_name FROM tablename : select distinct values of 'column_name'
+16. Comparison operators : 
+    - '=' : equals to operator
+    - '<' : less than
+    - '>' : greater than
+    - '>=' : greater than equalt to
+    - '<=' : less than equal to
+    - '<>' : not equal to
+17. Limit, offset and fetch : 
+    - SELECT * FROM person LIMIT 11 : retrieves first 11 rows from person table
+    - SELECT * FROM person FETCH FIRST 11 ROWS ONLY: retrieves first 11 rows from person table. Same as limit
+    - SELECT * FROM person OFFSET 11 : retrieves all rows from person table except first 11 rows
+18. Inclusion operator : 
+    - 'column_name IN listofvals' : True if value of column_name is in given list 'listofvals'
+    - 'column_name BETWEEN lower AND upper' : True if value of column_name is between 'lower' and 'upper'
+19. Pattern matching : 
+    - email LIKE '%.com': matches value of column 'email' with any string ending with '.com' 
+    - email ILIKE '%.com': matches value of column 'email' with any string ending with '.com' ignoring the case 
+    - '%' : matches any number of characters
+    - '_' : matches single character
+20. Groupby, having : 
+    - Used to retrieve rows for a particular value of column.
+    - SELECT country, COUNT(*) FROM person GROUP BY country : shows count of people in a country
+    - SELECT country, COUNT(*) FROM person GROUP BY country HAVING COUNT(*) > 50: shows count of people in a country with more than 50 people
+    - Aggregate functions works with GROUP BY clause : https://www.postgresql.org/docs/9.5/functions-aggregate.html
+21. Arithmatic operators : 
+    - '+' : Addition
+    - '-' : Subtraction
+    - '*' : Multiplication
+    - '/' : Division
+    - '%' : Modulus 
+    - ROUND : SELECT ROUND(price * .22, 2) FROM cars : returns the 22% of price rounded upto 2 decimal points
+22. Alias : Override the default name with custom name
+    - SELECT ROUND(price * .22, 2) as discount FROM cars : returns the 22% of price rounded upto 2 decimal points with 'discount' as column name
+23. Handling NULL using COALESCE, NULLIF: 
+    - COALESCE(list_of_values) : returns first non-null value from 'list_of_values'
+    - SELECT COALESCE(email, 'Email not given') AS email FROM person
+    - SELECT COALESCE(10 / NULLIF(0, 0)) 
+24. Date operations
+    - NOW() : returns current date and time
+    - NOW()::DATE : returns current date only
+    - Other date types : https://www.postgresql.org/docs/8.2/datatype-datetime.html
+    - SELECT NOW() - INTERVAL '1 YEAR' : returns current time minus 1 year. Other intervals are MONTH, DAY
+    - SELECT EXTRACT(DAY FROM NOW()): returns only the DAY part of the date. Other parameters are, YEAR, MONTH, DOW (day of the week), CENTURY
+    - SELECT AGE(NOW(), dateofbirth) FROM person : returns age of person. Actual age from second parameter to first parameter
+25. Primary Keys : Unique identifiers for a table
+    - This constraint is added to a column or group of columns when table is created
+26. Constraints :
+    - ALTER TABLE person DROP CONSTRAINT constraint_name : drops the constraint 'constraint_name'
+    - ALTER TABLE person ADD PRIMARY KEY (column_name): Add 'column_name' as Primary key for the table 'person' 
+    - ALTER TABLE person ADD CONSTRAINT constraint_name UNIQUE(column_name): Adds 'UNIQUE' constraint with name 'constraint_name' on 'column_name'
+                It means that 'column_name' will be unique and if any insert breaks this constraint, it will reults into an error 
+    - Other constraints : CHECK 
+27. Delete records:
+    - DELETE FROM person where name = 'burm' : deletes all records with name equals to 'burm'
+28. UPDATE records : 
+    - UPDATE person SET email = 'norbar@sirn.com' WHERE name = 'norbar' : It will update email for all records having name == 'norbar'
+29. Conflict resolution : 
+    - Conflict might be on a column having some constraint
+    - ON CONFLICT : is used to define an action in case conflict occurs
+    - INSERT INTO person VALUES (conflicting, values, ...) ON CONFLICT (column_name) DO NOTHING 
+    - Other Actions : 'DO UPDATE set column_name = EXCLUDED.column_name'
+30. Foreign keys and joins:
+    - Foreign key in one table is the primary key in another table
+    - Syntax : car_id NUMBER REFERENCES car(id) 
+        - 'car' is the table name whose primary key is referenced 
+        - 'id' is the column_name referenced by car_id
+31. Inner join : intersection of two tables
+    - All columns from A and B
+    - A row is included only if primary key and Foreign key matches
+    SELECT * FROM person 
+    JOIN car ON person.car_id = car.id
+32. Left Join :
+    - All columns of table A and B
+    - All the rows from A are included
+    - Rows from B are included only if matching key is there in A
+    - USING (column_name) can be used if column_name in both tables are same
+    SELECT * FROM person 
+    LEFT JOIN car USING (car_id)
+
+33. Sequences : 
+    - datatypes like BIGSERIAL are auto incrementing Sequences
+    - their next value can be retrieved using 'nextvalue' function
+    - Eg. Assuming table 'person_id_sequence' is a sequencing table for person.id 
+        - nextvalue(person_id_sequence) : will return next value in the sequence
+        - ALTER SEQUENCE person_id_sequence RESTART with 22 : Restarts the sequence from value 22
+34. Extensions : 
+    - SELECT * FROM pg_available_extensions : list of available extensions
+    - CREATE EXTENSION IF NOT EXISTS "extension-name" :
+        - installs extension 'extension-name' if it does not exist
+        - extension-name is the name in table pg_available_extensions
+    - \df : Lists available function (All the functions from all the extensions)

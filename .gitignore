@@ -5,5 +5,14 @@ kotlin/out
 .DS_Store
 **/node_modules/**
 **/mingw-w64-v7.0.0/**
+
+# Ignoring vscode metadata
 .vscode/**
 
+# Ignoring Django Files
+node_modules
+.tmp
+npm-debug.log
+wisdompets/db.sqlite3
+__pycache__/
+*.py[cod]
