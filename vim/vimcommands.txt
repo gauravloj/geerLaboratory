@@ -1,0 +1,105 @@
+
+vim file.txt +<vim_cmd> : open file.txt and runs the command vim_cmd as if it is running in command line mode
+vim  +<vim_cmd1> +<vim_cmd2> file.txt: runs the command vim_cmd1 then vim_cmd2 as if it is running in command line mode
+vim  -d file1.txt file1.txt: opens vim in diff mode and compare file1.txt and file2.txt
+ctrl + c or esc to enter in command mode
+
+Commands in command line
+1. :set number - Enable line numbering
+2. :qa! - q:- quit, a:- all buffer, ! :- force
+3. :w - write and save the current changes
+4. :w <filename> - saves the content to new file 'filename' and old file stays open for editing
+5. :e <filename> - opens 'filename' for editing
+6. /<keyword> - Searches for given keyword in forward direction from the cursor -> pressing 'n' will move cursor to next occurance
+6. ?<keyword> - Searches for given keyword in backward direction from the cursor
+7. :<integer> - go to given line number 'integer'
+8. :s/<old>/<new> - replace first occurance of 'old' text with 'new' text
+9. :s/<old>/<new>/g - replace all occurances of 'old' text with 'new' text
+10. :s/<old>/<new>/gc - confirm before replacing any occurance of 'old' text with 'new' text
+11. :jumps - display the jump list history
+12. :! <bashcommand> - runs the given bashcommand without switching to the terminal
+
+Command keys in command mode:
+1. i - insert text
+2. ctrl + g : displays the status line at the botton
+3. h, j, k, l -> up, down, left, right
+4. w, e, (, ), {, } - word, end of word, previous sentence, next sentence, previous para, next para
+5. shift + g - end of file. <num> + shift + g - move to 'num' line number
+6. gg - beginning of file
+7. ctrl + f, ctrl + b -> page down, page up
+8. 0, $ - beginning, end of a line
+9. * - go to next occurance of current word
+10. # - go to previous occurance of current word
+11. d + <movement keys> : deletes as per movement keys. movement keys are : h, j, k, l, 0, $, w, e, (, ), {, } etc.
+12. u - undo any change
+13. dd - delete the current line
+14. y + <movement keys> - copy the text as per movement keys. Eg. 'y + w' will copy the next word
+15. yy - copies the current line
+16. p - paste the yanked (copied) text after the current cursor
+17. P - paste the yanked (copied) text before the current cursor
+18. x - delete current character
+19. c + <movement keys> : deletes the text as per movement keys and open insert mode
+20. ctrl + o : move forward in jump list history
+21. ctrl + i : move backward in jump list history
+22. '. - move back to last changed location
+23. gf - go to file with file name under current cursor location
+24. gF - go to file with file name under current cursor location wit mentioned line number
+
+Visual modes:
+Pres shift + v to enter visual mode: Visual mode displays the text selected using movement keys
+pres ctrl + v to enter visual vlock mode: selects a block instead of words
+
+Registers:
+"a yy - copies the current line to register 'a'
+"a p - paste the text stored in register 'a'
+
+there are 52 registers: a-z, A-Z
+
+Marks :
+m + <lower case letters> : marks the current line and save it as the letter given. Eg. 'ma' - 'a' is name of mark and 'm' is start of marker
+m + <upper case letters> : marks the current line and save it as the letter given. Eg. 'mA' - 'A' is name of mark and 'm' is start of marker
+
+lower case letters are copied in current buffer while upper case letters are marked across files
+
+'<upper/lower case letter> - go to the marker defined by given letter
+
+------------------------------------------------------------------------------
+
+Buffers: content of file being edited
+vim file.txt - opens file.txt as buffer window
+:split - splits the buffer into two window
+:diffsplit filename.txt : opens diff between current buffer and filename.txt
+:vert diffsplit filename.txt : opens diff between current buffer and filename.txt with vertical split
+ctrl + w + w -> move between split buffer windows
+ctrl + w + c -> close a split buffer windows
+:new filename.txt - open 'filename.txt' as a new buffer window
+:e filename.txt - open 'filename.txt' as new buffer and hide old buffer
+:e! - reload the current buffer and discards and changes made to it
+:bd - buffer delete, deletes the current buffer and shows hidden buffers if any
+:bd filename.txt - buffer delete, deletes the buffer for filename.txt and shows hidden buffers if any
+:ls - list the current buffers
+:bn - move to next buffer
+:bp - move to previous buffer
+:b filename.txt - move to buffer filename.txt
+:b <num> - move to buffer at index num as given with ls command
+:r filename.txt - copies the content of filename.txt to current buffer
+
+------------------------------------------------------------------------------
+
+Configurations:
+:set number (or :se nu) - enable line number in the buffer
+:set nonumber (or :se nonu) - disable line number in the buffer
+:noremap <new key> <old key> - remaps the action of old key with new key. Eg. :noremap <SPACE> <C-F>
+:abb shortkey expandedtext - cretes abbreviation for expandedtext as shortkey. Whenever shortkey is written, it will expanded to expandedtext
+to avoide expanding shortkey, us ctrl + v before hitting space after the shortkey
+:com! cmd_name ! actual_cmd % - creates a new command 'cmd_name' that will run actual_cmd. % will expand to current filename
+:help option-summary - available options for configuration settings
+:set - displays current configuration settings
+:set ic - enable case insensitive search
+:set hls - highlight search
+:set incsearch - move the the matched pattern while typing
+:set clipboard=unnamedplus - set the vim clipboard to be same as system clipboard
+:syntax on - enables the syntax higlighting
+:colorscheme delek - changes the syntax color scheme
+:set dip+=vertical - setes diff split to vertical
+:set diffopt+=vertical - setes diff split to vertical

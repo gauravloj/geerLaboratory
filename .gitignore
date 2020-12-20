@@ -7,7 +7,7 @@ kotlin/out
 **/mingw-w64-v7.0.0/**
 
 # Ignoring vscode metadata
-.vscode/**
+**/.vscode/**
 
 # Ignoring Django Files
 node_modules
@@ -18,3 +18,5 @@ __pycache__/
 *.py[cod]
 Ex_Files_Optimizing_Python_Code*
 **/build/**
+python/jupyter-ws/jws_env/*
+*/package-lock.json
