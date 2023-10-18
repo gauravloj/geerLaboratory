@@ -1,3 +1,0 @@
-1. stdlib.jar standard function like print or sqrt
-2. volatile
-3. Static block without creating object

@@ -1,1 +1,0 @@
-1. To work with images in an app, install pillow library 'pip install pillow' 

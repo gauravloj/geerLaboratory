@@ -1,7 +1,0 @@
-1. Babel : converts modern JavaScript to older version that can run on older browser
-2. Polyfill : Adds those functionality which can't be converted into old JavaScript version
-3. Style Guides : Standard way of writing and maintaining code in a project. 
-4. ESLint :
-    - Ensures and suggest the code quality for JavaScript based on ES6 standards
-    - Rules are defined in 'eslint.org'
-5. Add 'use strict' in JavaScript file

@@ -1,4 +1,0 @@
-1. All about telegram API : https://core.telegram.org/api
-2. Comprehensive list of Bots API : https://core.telegram.org/bots/api
-3. Source code for telegram app : https://telegram.org/apps#source-code
-4. Bots sample : https://core.telegram.org/bots/sample
