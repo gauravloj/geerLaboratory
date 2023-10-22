@@ -1,0 +1,8 @@
+check release versions:
+- lsb_release -a
+- uname -a
+
+check shell-shock vulnerability:
+1. env 'x=() { :;}; echo vulnerable''BASH_FUNC_x()=() { :;}; echo vulnerable' bash -c "echo test"
+2. cd /tmp; rm -f /tmp/echo; env 'x=() { (a)=>\' bash -c "echo date"; cat / tmp/echo
+
