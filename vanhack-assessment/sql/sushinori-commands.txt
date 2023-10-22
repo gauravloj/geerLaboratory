@@ -1,0 +1,85 @@
+CREATE TABLE  menu_item (
+    id INTEGER PRIMARY KEY,
+    name TEXT ,
+    price REAL ,
+    cost REAL
+);
+
+CREATE TABLE  sales_order (
+    id INTEGER PRIMARY KEY,
+    order_time TEXT
+);
+
+CREATE TABLE  order_item (
+    id INTEGER PRIMARY KEY,
+    sales_order_id INTEGER,
+    menu_item_id INTEGER
+);
+
+----
+
+insert into menu_item (id, price, cost, name)
+values
+(1 , 14.99 , 4     , 'mushroom'),
+(2  , 8.99  , 4.09  , 'dragon'),
+(3  , 4.99  , 1.63  , 'zucchini'),
+(4  , 3.99  , 1.25  , 'rainbow'),
+(5  , 13.99 , 5.8   , 'portobello'),
+(6  , 15.99 , 11.35 , 'brown rice')
+
+insert into sales_order (id, order_time)
+values
+(1  , '2018-12-19 03:44:22' ),
+(2  , '2018-12-26 03:39:34' ),
+(3  , '2018-12-26 04:08:22' ),
+(4  , '2018-12-27 03:53:58' )
+
+insert into order_item (id ,sales_order_id ,menu_item_id)
+values
+(1  , 1              , 2),
+(2  , 1              , 6),
+(3  , 2              , 6),
+(4  , 2              , 4),
+(5  , 2              , 1),
+(6  , 3              , 1),
+(7  , 3              , 2),
+(8  , 3              , 4),
+(9  , 4              , 1),
+(10 , 4              , 5),
+(11 , 4              , 2)
+
+
+--------
+
+Queries:
+select date(so.order_time) as sales_date, count(*) as qty, sum(mi.price - mi.cost) as profit from order_item as oi
+join sales_order as so on so.id = oi.sales_order_id
+join menu_item as mi on mi.id = oi.menu_item_id
+where sales_date > date('now', '-7 days')
+group by sales_date
+order by so.order_time desc
+
+select strftime('%w',date(so.order_time)) as sales_date, count(*) as qty, sum(mi.price - mi.cost) as profit from order_item as oi
+join sales_order as so on so.id = oi.sales_order_id
+join menu_item as mi on mi.id = oi.menu_item_id
+where sales_date > date('2018-12-29', '-7 days')
+group by sales_date
+order by so.order_time desc
+
+select CASE strftime('%w',date(sales_date))
+    when '0' THEN 'Sun'
+    when '1' THEN 'Mon'
+    when '2' THEN 'Tue'
+    when '3' THEN 'Wed'
+    when '4' THEN 'Thu'
+    when '5' THEN 'Fri'
+    when '6' THEN 'Sat'
+    END
+    as sales_day, qty, profit from
+( select date(so.order_time) as sales_date, count(*) as qty, sum(mi.price - mi.cost) as profit from order_item as oi
+join sales_order as so on so.id = oi.sales_order_id
+join menu_item as mi on mi.id = oi.menu_item_id
+where sales_date > date('2018-12-29', '-7 days')
+group by sales_date
+order by so.order_time desc ) as temp
+

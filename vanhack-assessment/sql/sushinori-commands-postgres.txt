@@ -1,0 +1,127 @@
+CREATE TABLE  sushinori.menu_item (
+    id INTEGER PRIMARY KEY,
+    name TEXT ,
+    price REAL ,
+    cost REAL
+);
+
+CREATE TABLE  sushinori.sales_order (
+    id INTEGER PRIMARY KEY,
+    order_time timestamp
+);
+
+CREATE TABLE  sushinori.order_item (
+    id INTEGER PRIMARY KEY,
+    sales_order_id INTEGER,
+    menu_item_id INTEGER
+);
+
+----
+
+insert into sushinori.menu_item (id, price, cost, name)
+values
+(1 , 14.99 , 4     , 'mushroom'),
+(2  , 8.99  , 4.09  , 'dragon'),
+(3  , 4.99  , 1.63  , 'zucchini'),
+(4  , 3.99  , 1.25  , 'rainbow'),
+(5  , 13.99 , 5.8   , 'portobello'),
+(6  , 15.99 , 11.35 , 'brown rice')
+
+insert into sushinori.sales_order (id, order_time)
+values
+(1  , '2018-12-19 03:44:22' ),
+(2  , '2018-12-26 03:39:34' ),
+(3  , '2018-12-26 04:08:22' ),
+(4  , '2018-12-27 03:53:58' )
+
+insert into sushinori.order_item (id ,sales_order_id ,menu_item_id)
+values
+(1  , 1              , 2),
+(2  , 1              , 6),
+(3  , 2              , 6),
+(4  , 2              , 4),
+(5  , 2              , 1),
+(6  , 3              , 1),
+(7  , 3              , 2),
+(8  , 3              , 4),
+(9  , 4              , 1),
+(10 , 4              , 5),
+(11 , 4              , 2)
+
+
+--------
+
+Queries:
+1.
+select date(so.order_time) as sales_date, mi.price - mi.cost as profit from sushinori.order_item as oi
+join sushinori.sales_order as so on so.id = oi.sales_order_id
+join sushinori.menu_item as mi on mi.id = oi.menu_item_id
+order by so.order_time desc
+
+2.
+select date(so.order_time) as sales_date, mi.price - mi.cost as profit from sushinori.order_item as oi
+join sushinori.sales_order as so on so.id = oi.sales_order_id
+join sushinori.menu_item as mi on mi.id = oi.menu_item_id
+where date(so.order_time) > (CURRENT_DATE - integer '7')
+order by so.order_time desc
+
+3.
+select date(so.order_time) as sales_date, count(*) as qty, sum(mi.price - mi.cost) as profit from sushinori.order_item as oi
+join sushinori.sales_order as so on so.id = oi.sales_order_id
+join sushinori.menu_item as mi on mi.id = oi.menu_item_id
+where date(so.order_time) > (CURRENT_DATE - integer '7')
+group by date(so.order_time)
+order by date(so.order_time) desc
+
+4.
+select EXTRACT('dow' from  so.order_time) as dofweek, count(*) as qty, sum(mi.price - mi.cost) as profit from sushinori.order_item as oi
+join sushinori.sales_order as so on so.id = oi.sales_order_id
+join sushinori.menu_item as mi on mi.id = oi.menu_item_id
+where date(so.order_time) > (date '2018-12-29' - integer '7')
+group by dofweek
+order by dofweek
+
+5.
+SELECT generate_series as weekdays FROM generate_series(0,6);
+
+6.
+SELECT generate_series as day, coalesce(recentorders.qty, 0) as qty_sold, coalesce(recentorders.profit, 0) as total_profit FROM generate_series(0,6)
+left join (
+select EXTRACT('dow' from  so.order_time) as dofweek, count(*) as qty, sum(mi.price - mi.cost) as profit from sushinori.order_item as oi
+join sushinori.sales_order as so on so.id = oi.sales_order_id
+join sushinori.menu_item as mi on mi.id = oi.menu_item_id
+where date(so.order_time) > (date '2018-12-29' - integer '7')
+group by dofweek
+order by dofweek
+    ) as recentorders on generate_series = recentorders.dofweek
+
+order by day
+
+7.
+SELECT CASE generate_series
+    when '0' THEN 'Sun'
+    when '1' THEN 'Mon'
+    when '2' THEN 'Tue'
+    when '3' THEN 'Wed'
+    when '4' THEN 'Thu'
+    when '5' THEN 'Fri'
+    when '6' THEN 'Sat'
+    END
+    as day, coalesce(recentorders.qty, 0) as qty_sold, coalesce(recentorders.profit, 0) as total_profit FROM generate_series(0,6)
+left join (
+select EXTRACT('dow' from  so.order_time) as dofweek, count(*) as qty, sum(mi.price - mi.cost) as profit from sushinori.order_item as oi
+join sushinori.sales_order as so on so.id = oi.sales_order_id
+join sushinori.menu_item as mi on mi.id = oi.menu_item_id
+where date(so.order_time) > (date '2018-12-29' - integer '7')
+group by dofweek
+order by dofweek
+    ) as recentorders on generate_series = recentorders.dofweek
+order by generate_series
+
+
+select EXTRACT('dow' from  so.order_time) as dofweek, count(*) as qty, sum(mi.price - mi.cost) as profit from sushinori.order_item as oi
+join sushinori.sales_order as so on so.id = oi.sales_order_id
+join sushinori.menu_item as mi on mi.id = oi.menu_item_id
+where so.order_time > (timestamp '2018-12-29' -  interval '168 hours')
+group by dofweek
+
