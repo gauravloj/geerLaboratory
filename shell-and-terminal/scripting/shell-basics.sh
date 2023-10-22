@@ -200,6 +200,47 @@ loopsfun(){
     echo $i
   done
 
+  # loops over the arguments
+  for value; do 
+    echo "$value"
+  done
+
+  # explicit loop
+  # all parameters are strings
+  for num in 1 "two" three $PWD $(ls); do
+    echo "$num"
+  done
+
+  # loop over an array
+  for person in ${namelist[@]}; do
+    echo $person
+  done
+
+  # try IFS="," before running below loop
+  # '*' expands to a single string
+  for person in ${namelist[*]}; do
+    echo $person
+  done
+
+  # we want a hash (i.e., key/value pairs)
+  declare -A hash
+  # loop over associative array
+  for key in "${!hash[@]}"; do
+    echo "key $key ==> value ${hash[$key]}"
+  done
+  for key in "${!hash[@]}";do
+    echo "word $key count = ${hash[$key]}"
+  done
+
+  while read word count; do
+    let hash[$word]+="$count" 
+  done
+
+  # read in our data
+  while read key value; do
+    hash[$key]="$value" 
+  done
+
   # while loop
   i=1
   while [[ $i -le 10 ]]; do
@@ -214,6 +255,8 @@ loopsfun(){
     ((i--))
   done; echo
 
+
+
 }
 
 readfiles(){
@@ -226,3 +269,12 @@ readfiles(){
 }
 
 # declare -F # list all functions
+# declare -i SEE
+# X=9
+# Y=3
+# SEE=X+Y # only this one will be arithmetic 
+# SAW=X+Y # this is just a literal string 
+# SUM=$X+$Y # this is string concatenation 
+# echo "SEE = $SEE"
+# echo "SAW = $SAW"
+# echo "SUM = $SUM"
