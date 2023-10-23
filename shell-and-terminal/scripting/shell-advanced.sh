@@ -1,3 +1,5 @@
+# typed variables
+
 # Declare an array
 # declare -a
 # local -a
@@ -111,3 +113,45 @@ hashplay(){
   unset -v myhash
 
 }
+
+function stringoperations(){
+  echo ${PATH#bin:} # remove shortest prefix
+  echo ${PATH##bin:} # remove longest prefix
+  echo ${PATH%:bin} # remove shortest suffix
+  echo ${PATH%%:bin} # remove longest suffix
+  echo ${PATH/bin/BIN} # replace First
+  echo ${PATH//bin/BIN} # replace All
+}
+
+# 'shift' to discard the first argument
+# getopt -o abc: --long alpha,bravo,charlie: -n 'myprogram' -- "$@"
+# OPTARG is the option's argument (if any)
+
+# while getopts ":ab:c" opt; do
+#       case $opt in
+# a ) process option -a ;;
+# b ) process option -b
+# $OPTARG is the option's argument ;;
+# c ) process option -c ;;
+#           \? ) echo 'usage: alice [-a] [-b barg] [-c] args.
+#                exit 1
+# esac done
+#   shift $(($OPTIND - 1))
+#   normal processing of arguments...
+
+# IO redirections
+# 'n' is the file descriptor
+# pipes : | 
+# output : > >>, n> n>>
+# input : < << <<<, n< n<< n<<<
+# noclobber: >| file, n>| file
+# both : <> file, n<> file
+# duplicate: n>& m, n<& m, n>&, n<&
+# close the stream: n>&-, n<&-, <&-, >&-
+# file descriptor : 2> 2>> 2>&1 2>&- 2<&- 2>/dev/null
+# here document : <<EOF
+# here string : <<<
+# process substitution : <(cmd) >(cmd)
+
+
+# eval : evaluate a string as a command

@@ -6,3 +6,17 @@ check shell-shock vulnerability:
 1. env 'x=() { :;}; echo vulnerable''BASH_FUNC_x()=() { :;}; echo vulnerable' bash -c "echo test"
 2. cd /tmp; rm -f /tmp/echo; env 'x=() { (a)=>\' bash -c "echo date"; cat / tmp/echo
 
+
+process ID of the current shell: echo $$
+process ID of the last background job: echo $!
+
+coroutines: 
+- https://www.gnu.org/software/bash/manual/html_node/Coroutines.html
+
+Fake signal handling:
+function errtrap {
+    es=$?
+    echo "ERROR line $1: Command exited with status $es."
+}
+trap 'errtrap $LINENO' ERR
+
