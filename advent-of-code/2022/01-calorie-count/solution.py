@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-with open("./input1.txt") as f:
+with open("./input.txt") as f:
     content = f.readlines()
 
     max_cal = 0
